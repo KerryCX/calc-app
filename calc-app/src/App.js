@@ -1,10 +1,10 @@
 import './App.css';
-import {ButtonsGrid} from './components/ButtonsGrid';
+import {Calculator} from "./components/Calculator";
 
 function App() {
   return (
     <div className="App">
-      <ButtonsGrid/>
+        <Calculator/>
     </div>
   );
 }

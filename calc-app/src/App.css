@@ -1,4 +1,7 @@
 .App {
   text-align: center;
+  background-color: darkblue;
+  height: 90vh;
+  width: 100vw;
 }
 

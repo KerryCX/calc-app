@@ -1,0 +1,9 @@
+*{
+    box-sizing: border-box;
+}
+
+button{
+    background-color: aqua;
+    height: 50px;
+    width: 75px;
+}

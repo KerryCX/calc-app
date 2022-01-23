@@ -1,0 +1,19 @@
+*{
+    box-sizing: border-box
+}
+
+.grid-styling{
+    display: grid;
+    background-color: darkblue;
+    border: 5px darkblue solid;
+    width: 100vw;
+    grid-template-areas:
+    ". . ."
+    ". . ."
+    ". . .";
+    justify-content: center;
+}
+
+.item1{
+    grid-area: a;
+}
