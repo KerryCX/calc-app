@@ -7,3 +7,7 @@ button{
     height: 50px;
     width: 75px;
 }
+
+.button-symbol{
+    font-size: larger;
+}

@@ -4,7 +4,7 @@ import './ButtonsGrid.css';
 export const ButtonsGrid = () => {
    return(
        <section className='grid-styling'>
-           <Button className ="item1"
+           <Button
             value={'1'}
            />
            <Button
@@ -32,13 +32,15 @@ export const ButtonsGrid = () => {
                value={'9'}
            />
            <Button
-               value={'X'}
+               value={'-'}
+               class={'button-symbol'}
            />
            <Button
                 value={'0'}
            />
            <Button
                value={'+'}
+               class={'button-symbol'}
            />
        </section>
    );
