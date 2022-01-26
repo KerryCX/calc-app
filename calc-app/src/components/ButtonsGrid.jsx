@@ -42,6 +42,18 @@ export const ButtonsGrid = () => {
                value={'+'}
                class={'button-symbol'}
            />
+           <Button
+               value={'X'}
+               class={'button-symbol'}
+           />
+           <Button
+               value={'='}
+               class={'button-symbol'}
+           />
+           <Button
+               value={'/'}
+               class={'button-symbol'}
+           />
        </section>
    );
 }
