@@ -6,7 +6,6 @@ export const Button = ({value, classy, childToParent}) => {
 
     return(
         <button className = {classy} onClick = { () => {
-        console.log({classy})
             setValue(value)
             childToParent(newValue)
             console.log(newValue)

@@ -6,18 +6,19 @@
     display: grid;
     background-color: darkblue;
     border: 5px darkblue solid;
-    width: 100vw;
+    width: 100%;
+    height: auto;
     grid-template-areas:
+    ". . . "
     ". . ."
     ". . ."
-     ". . ."
+    ". . ."
+    ". . ."
     ". . .";
     justify-content: center;
 }
 
-.item1{
-    grid-area: a;
-}
+
 
 .white{
     color: #FAEBD7;

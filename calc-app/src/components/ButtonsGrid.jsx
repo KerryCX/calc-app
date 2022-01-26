@@ -13,7 +13,6 @@ const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','=',
 
    return(
        <section className='grid-styling'>
-        <div>
             {calculatorKeys.map((currentKey, index) => (
                 <Button
                     key={index}
@@ -21,9 +20,8 @@ const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','=',
                     childToParent={childToParent}
                 />
                 ))}
-        </div>
-        <div className="white">{keyedValue}</div>
 
+<div className="white">{keyedValue}</div>
        </section>
    );
 }
