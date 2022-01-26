@@ -1,7 +1,14 @@
 import './Button.css';
+import {useState} from 'react';
 
-export const Button = (props) => {
+export const Button = ({value, classy, childToParent}) => {
+
+    const [newValue, setValue] = useState(value)
     return(
-        <button>{props.value}</button>
+        <button className = {classy} onClick = { () => {
+            setValue(value)
+            childToParent(newValue)
+        }}>{value}
+        </button>
     );
 }
