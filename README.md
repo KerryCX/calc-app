@@ -1,6 +1,6 @@
 # calc-app
 
-##In progress
+#In progress
 
 make a simple calculator app using React.js.
 
