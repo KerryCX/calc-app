@@ -2,14 +2,15 @@ import './Button.css';
 import {useState} from 'react';
 
 
-export const Button = (props) => {
-    const [newValue, setValue] = useState('')
-console.log(newValue)
+export const Button = ({value, classy, childToParent}) => {
+    const [newValue, setValue] = useState(value)
+
     return(
-        <button className = {props.class} onClick = { () => {
-            const newNumber = props.value
-            setValue(props.value)
-        }}>{props.value}
+        <button className = {classy} onClick = { () => {
+            setValue(value)
+            childToParent(newValue)
+            console.log(newValue)
+        }}>{value}
         </button>
     );
 }
