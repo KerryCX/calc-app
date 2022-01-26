@@ -25,3 +25,10 @@
 .white{
     color: #FAEBD7;
 }
+
+.display-answer{
+    background-color: antiquewhite;
+    height: 50px;
+    width: 225px;
+    border: 5px darkblue solid;
+}
