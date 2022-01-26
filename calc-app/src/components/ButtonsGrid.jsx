@@ -3,13 +3,21 @@ import './ButtonsGrid.css';
 import {useState} from 'react';
 export const ButtonsGrid = () => {
 
+   const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','=','/']
    const [keyedValue, setKeyValue] = useState('');
+   const [newDisplay, setDisplay] = useState([])
+
+
    const childToParent = (sentKeyValue) => {
         setKeyValue(sentKeyValue);
+        console.log(sentKeyValue)
+        const displayArray = [...newDisplay, ...keyedValue];
+        setDisplay(displayArray);
+        console.log(newDisplay)
    }
 
-   const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','=','/']
 
+console.log(newDisplay)
    return(
        <section className='grid-styling'>
             {calculatorKeys.map((currentKey, index) => (
@@ -19,7 +27,7 @@ export const ButtonsGrid = () => {
                     childToParent={childToParent}
                 />
                 ))}
-            <div className="display-position display-answer">{keyedValue}</div>
+            <div className="display-position display-answer">{newDisplay}</div>
        </section>
    );
 }
