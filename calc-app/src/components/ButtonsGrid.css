@@ -14,11 +14,13 @@
     ". . ."
     ". . ."
     ". . ."
-    ". . .";
+    "display display display";
     justify-content: center;
 }
 
-
+.display-position{
+    grid-area: display;
+}
 
 .white{
     color: #FAEBD7;

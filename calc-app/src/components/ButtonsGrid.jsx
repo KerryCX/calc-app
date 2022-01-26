@@ -21,7 +21,7 @@ const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','=',
                 />
                 ))}
 
-<div className="white">{keyedValue}</div>
+<div className="white display-position">{keyedValue}</div>
        </section>
    );
 }
