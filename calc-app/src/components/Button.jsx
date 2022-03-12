@@ -1,14 +1,19 @@
 import './Button.css';
 import {useState} from 'react';
 
-export const Button = ({ value, classy, childToParent }) => {
+export const Button = ({ value, symbolStyle, childToParent }) => {
 
     const [newValue, setValue] = useState(value)
+
     return(
-        <button className = { classy } onClick = { () => {
-            setValue(value)
+        /*dd*/
+        
+        <button className = { symbolStyle } onClick = { () => {
+            setValue(value)/*dd*/
             childToParent(newValue)
         }}>{value}
         </button>
     );
 }
+
+
