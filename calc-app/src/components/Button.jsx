@@ -16,4 +16,12 @@ export const Button = ({ value, symbolStyle, childToParent }) => {
     );
 }
 
+export const ResetButton = ({value, symbolStyle, resetF}) => {
+//resets all fields
+    return(
+        <button className= { symbolStyle } onClick = { () => {
+            resetF()
+        }}>{value}</button>
+    )
+}
 

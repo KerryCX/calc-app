@@ -1,11 +1,11 @@
-import {Button} from './Button.jsx';
+import {Button, ResetButton} from './Button.jsx';
 import './ButtonsGrid.css';
 import {useEffect, useState} from 'react';
 
 export const ButtonsGrid = () => {
 
 
-  const calculatorKeys = ['0','2','3','4','5','6','7','8','9','-','0','+','X','=','/']
+  const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','=','/']
   const [newDisplay, setDisplay] = useState([])
   const [newRightSide, setRightSide] = useState([])
   const [lefty, setLefty] = useState([])
@@ -26,6 +26,16 @@ export const ButtonsGrid = () => {
     }
   }, [operator, operator2, leftSet, rightSet, lefty, righty])
 
+  const resetF = () => {
+    setDisplay([])
+    setLefty([])
+    setRighty([])
+    setOperator("")
+    setOperator2("")
+    setLefts(false)
+    setRights(false)
+    setRightSide([])
+  }
 
 
   const childToParent = (sentKeyValue) => {
@@ -85,6 +95,9 @@ export const ButtonsGrid = () => {
         />
       ))}
       <div className="display-position display-answer">{newDisplay}</div>
+      <ResetButton
+        value={"Reset"}
+        resetF={resetF}/>
     </section>
    );
 
