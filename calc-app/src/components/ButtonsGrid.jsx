@@ -17,7 +17,7 @@ export const ButtonsGrid = () => {
 
   useEffect(()=> console.log(lefty, righty))
   useEffect(()=> {
-    if(operator === "+" && operator2 !== "=") {
+    if((operator === "+" || operator === "-" || operator === "X" || operator === "/") && operator2 !== "=") {
       setLefts(true)
     } else if (operator2 === "=") {
       setRights(true)
@@ -36,7 +36,7 @@ export const ButtonsGrid = () => {
       setDisplay([...newDisplay, sentKeyValue])
     }
 
-    if(sentKeyValue === "+" || sentKeyValue === "-" || sentKeyValue === "+" || sentKeyValue === "X") {
+    if(sentKeyValue === "+" || sentKeyValue === "-" || sentKeyValue === "X" || sentKeyValue === "/") {
       setLefty([...lefty, newDisplay])
       setOperator(sentKeyValue)
     } else if (sentKeyValue === "=") {
@@ -54,14 +54,23 @@ export const ButtonsGrid = () => {
       console.log(i, ap1[i])
       leftValue = leftValue + ap1[i]
     }
-    let value1 = leftValue.replace(/,/g, "")
+    let value1 = parseInt(leftValue.replace(/,/g, ""))
 
     for (let i = 0; i<ap3.length; i++) {
       rightValue = rightValue + ap3[i]
     }
-    let value2 = rightValue.replace(/,/g, "")
+    let value2 = parseInt(rightValue.replace(/,/g, ""))
 
-    console.log(value1, ap2, value2)
+    if (ap2 === "+") {
+      result = value1 + value2
+    } else if (ap2 === "-") {
+      result = value1 - value2
+    } else if (ap2 === "X") {
+      result = value1 * value2
+    } else if (ap2 === "/") {
+    result = value1 / value2
+    }
+    console.log(value1, ap2, value2, result)
   }
 
   return(
