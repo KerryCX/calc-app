@@ -21,7 +21,8 @@ export const ButtonsGrid = () => {
       setLefts(true)
     } else if (operator2 === "=") {
       setRights(true)
-      calculate(lefty, operator, righty)
+      console.log(calculate(lefty, operator, righty))
+      setDisplay(calculate(lefty, operator, righty))
     }
   }, [operator, operator2, leftSet, rightSet, lefty, righty])
 
@@ -68,9 +69,9 @@ export const ButtonsGrid = () => {
     } else if (ap2 === "X") {
       result = value1 * value2
     } else if (ap2 === "/") {
-    result = value1 / value2
+      result = value1 / value2
     }
-    console.log(value1, ap2, value2, result)
+    return result;
   }
 
   return(
