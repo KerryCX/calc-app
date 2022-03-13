@@ -25,3 +25,14 @@ export const ResetButton = ({value, symbolStyle, resetF}) => {
     )
 }
 
+export const EqualsButton = ({ value, symbolStyle, calc2 }) => {
+    //resets all fields
+    const [newValue, setValue] = useState(value)
+        return(
+            <button className= { symbolStyle } onClick = { () => {
+                setValue(value)
+                calc2(newValue)
+            }}>{value}</button>
+        )
+    }
+

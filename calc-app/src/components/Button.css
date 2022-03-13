@@ -2,12 +2,17 @@
     box-sizing: border-box;
 }
 
-button{
+button {
     background-color: aqua;
     height: 50px;
     width: 75px;
 }
 
-.button-symbol{
+.button-symbol {
     font-size: larger;
+}
+
+.equals-symbol {
+    font-size: larger;
+    width: 100%;
 }

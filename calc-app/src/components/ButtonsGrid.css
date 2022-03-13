@@ -14,11 +14,15 @@
     ". . ."
     ". . ."
     ". . ."
-    "display display display";
+    "display display display"
+    ". equals equals";
     justify-content: center;
 }
 
-.display-position{
+.equals-position {
+    grid-area: equals;
+}
+.display-position {
     grid-area: display;
 }
 

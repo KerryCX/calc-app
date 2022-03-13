@@ -1,11 +1,11 @@
-import {Button, ResetButton} from './Button.jsx';
+import {Button, ResetButton, EqualsButton} from './Button.jsx';
 import './ButtonsGrid.css';
 import {useEffect, useState} from 'react';
 
 export const ButtonsGrid = () => {
 
 
-  const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','=','/']
+  const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','+/-','/']
   const [newDisplay, setDisplay] = useState([])
   const [newRightSide, setRightSide] = useState([])
   const [lefty, setLefty] = useState([])
@@ -15,13 +15,11 @@ export const ButtonsGrid = () => {
   const [leftSet, setLefts] = useState(false)
   const [rightSet, setRights] = useState(false)
 
-  useEffect(()=> console.log(lefty, righty))
   useEffect(()=> {
-    if((operator === "+" || operator === "-" || operator === "X" || operator === "/") && operator2 !== "=") {
+    if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && operator2 !== "=") {
       setLefts(true)
     } else if (operator2 === "=") {
-      setRights(true)
-      console.log(calculate(lefty, operator, righty))
+      console.log(lefty, operator, righty)
       setDisplay(calculate(lefty, operator, righty))
     }
   }, [operator, operator2, leftSet, rightSet, lefty, righty])
@@ -35,21 +33,41 @@ export const ButtonsGrid = () => {
     setLefts(false)
     setRights(false)
     setRightSide([])
+  
   }
 
+  const calc2 = (sentKeyValue) => {
+    //puts the number just input into the display variable newDisplay
+    if(leftSet === false){
+      return;
+    }
+    else {
+        setRightSide([...newRightSide, sentKeyValue])
+        setDisplay([...newDisplay, sentKeyValue])
+        setRighty([...righty, newRightSide])
+        setOperator2(sentKeyValue)
+        setRights(true)
+      }
 
+
+      
+  }
   const childToParent = (sentKeyValue) => {
     //puts the number just input into the display variable newDisplay
-    if(leftSet === false)
+    if(sentKeyValue !== "+/-"){
+      if(leftSet === false)
       setDisplay([...newDisplay, sentKeyValue])
-    else {
-      setRightSide([...newRightSide, sentKeyValue])
-      setDisplay([...newDisplay, sentKeyValue])
+      else {
+        setRightSide([...newRightSide, sentKeyValue])
+        setDisplay([...newDisplay, sentKeyValue])
+      }
     }
 
     if(sentKeyValue === "+" || sentKeyValue === "-" || sentKeyValue === "X" || sentKeyValue === "/") {
       setLefty([...lefty, newDisplay])
       setOperator(sentKeyValue)
+    } else if (sentKeyValue === "+/-") {
+      console.log("ignore")
     } else if (sentKeyValue === "=") {
       setRighty([...righty, newRightSide])
       setOperator2(sentKeyValue)
@@ -97,7 +115,14 @@ export const ButtonsGrid = () => {
       <div className="display-position display-answer">{newDisplay}</div>
       <ResetButton
         value={"Reset"}
+        symbolStyle="button-symbol"
         resetF={resetF}/>
+      <div className="equals-position">
+        <EqualsButton
+        value={"="}
+        symbolStyle="equals-symbol"
+        calc2={calc2}/>
+      </div>
     </section>
    );
 
