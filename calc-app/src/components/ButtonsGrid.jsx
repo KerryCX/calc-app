@@ -4,55 +4,49 @@ import {useEffect, useState} from 'react';
 
 export const ButtonsGrid = () => {
 
-
   const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','+/-','/']
   const [newDisplay, setDisplay] = useState([])
   const [newRightSide, setRightSide] = useState([])
   const [lefty, setLefty] = useState([])
   const [righty, setRighty] = useState([])
   const [operator, setOperator] = useState("")
-  const [operator2, setOperator2] = useState("")
+  const [resultRequested, setResultRequested] = useState(false)
   const [leftSet, setLefts] = useState(false)
   const [rightSet, setRights] = useState(false)
 
   useEffect(()=> {
-    if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && operator2 !== "=") {
+    if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && resultRequested === false) {
       setLefts(true)
-    } else if (operator2 === "=") {
-      console.log(lefty, operator, righty)
+    } else if (resultRequested === true) {
       setDisplay(calculate(lefty, operator, righty))
     }
-  }, [operator, operator2, leftSet, rightSet, lefty, righty])
+  }, [operator, resultRequested, leftSet, rightSet, lefty, righty])
 
-  const resetF = () => {
+  const resetCalculator = () => {
     setDisplay([])
     setLefty([])
     setRighty([])
     setOperator("")
-    setOperator2("")
+    setResultRequested(false)
     setLefts(false)
     setRights(false)
     setRightSide([])
-  
   }
 
-  const calc2 = (sentKeyValue) => {
+  const requestResult = (sentKeyValue) => {
     //puts the number just input into the display variable newDisplay
     if(leftSet === false){
       return;
+    } else {
+      setRightSide([...newRightSide, sentKeyValue])
+      setDisplay([...newDisplay, sentKeyValue])
+      setRighty([...righty, newRightSide])
+      setResultRequested(true)
+      setRights(true)
     }
-    else {
-        setRightSide([...newRightSide, sentKeyValue])
-        setDisplay([...newDisplay, sentKeyValue])
-        setRighty([...righty, newRightSide])
-        setOperator2(sentKeyValue)
-        setRights(true)
-      }
-
-
-      
   }
-  const childToParent = (sentKeyValue) => {
+
+  const keyPressed = (sentKeyValue) => {
     //puts the number just input into the display variable newDisplay
     if(sentKeyValue !== "+/-"){
       if(leftSet === false)
@@ -67,61 +61,61 @@ export const ButtonsGrid = () => {
       setLefty([...lefty, newDisplay])
       setOperator(sentKeyValue)
     } else if (sentKeyValue === "+/-") {
-      console.log("ignore")
-    } else if (sentKeyValue === "=") {
-      setRighty([...righty, newRightSide])
-      setOperator2(sentKeyValue)
-    }   
+      if(lefty<0) {
+        let oi = (lefty * -1)
+        setLefty(oi)
+      } else {
+        let oi = (lefty * -1)
+        setLefty(oi)
+      }
+      //need to work out what to do here
+    } 
   }
 
-  const calculate = (ap1, ap2, ap3) => {
-    console.log(ap1, ap2, ap3)
-    let leftValue = ""
-    let rightValue = ""
+  const calculate = (num1, operator, num3) => {
     let result = 0
-    for (let i = 0; i<ap1.length; i++) {
-      console.log(i, ap1[i])
-      leftValue = leftValue + ap1[i]
-    }
-    let value1 = parseInt(leftValue.replace(/,/g, ""))
+    let value1 = parseInt((num1.toString()).replace(/,/g, ""))
+    let value2 = parseInt((num3.toString()).replace(/,/g, ""))
 
-    for (let i = 0; i<ap3.length; i++) {
-      rightValue = rightValue + ap3[i]
-    }
-    let value2 = parseInt(rightValue.replace(/,/g, ""))
-
-    if (ap2 === "+") {
-      result = value1 + value2
-    } else if (ap2 === "-") {
-      result = value1 - value2
-    } else if (ap2 === "X") {
-      result = value1 * value2
-    } else if (ap2 === "/") {
-      result = value1 / value2
+    switch(operator) {
+      case "+":
+        result = value1 + value2
+        break;
+      case "-":
+        result = value1 - value2
+        break;
+      case "X":
+        result = value1 * value2
+        break;
+      case "/":
+        result = value1 / value2
+        break;
+      default:
+        break;
     }
     return result;
   }
 
   return(
     <section className='grid-styling'>
-      {calculatorKeys.map((currentKey, index) => (
+      { calculatorKeys.map((currentKey, index) => (
         <Button
           key={index}
           value={currentKey}
           symbolStyle='button-symbol'
-          childToParent={childToParent}            
+          keyPressed = { keyPressed }            
         />
       ))}
       <div className="display-position display-answer">{newDisplay}</div>
       <ResetButton
         value={"Reset"}
         symbolStyle="button-symbol"
-        resetF={resetF}/>
+        resetCalculator={resetCalculator}/>
       <div className="equals-position">
         <EqualsButton
         value={"="}
         symbolStyle="equals-symbol"
-        calc2={calc2}/>
+        requestResult={requestResult}/>
       </div>
     </section>
    );
