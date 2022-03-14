@@ -18,6 +18,7 @@ export const ButtonsGrid = () => {
     if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && resultRequested === false) {
       setLefts(true)
     } else if (resultRequested === true) {
+      console.log("jj")
       setDisplay(calculate(lefty, operator, righty))
     }
   }, [operator, resultRequested, leftSet, rightSet, lefty, righty])
@@ -53,12 +54,15 @@ export const ButtonsGrid = () => {
       setDisplay([...newDisplay, sentKeyValue])
       else {
         setRightSide([...newRightSide, sentKeyValue])
+        console.log(newDisplay)
         setDisplay([...newDisplay, sentKeyValue])
       }
     }
 
     if(sentKeyValue === "+" || sentKeyValue === "-" || sentKeyValue === "X" || sentKeyValue === "/") {
+      console.log(lefty)
       setLefty([...lefty, newDisplay])
+      console.log(lefty)
       setOperator(sentKeyValue)
     } else if (sentKeyValue === "+/-") {
       if(lefty<0) {
@@ -74,9 +78,23 @@ export const ButtonsGrid = () => {
 
   const calculate = (num1, operator, num3) => {
     let result = 0
-    let value1 = parseInt((num1.toString()).replace(/,/g, ""))
-    let value2 = parseInt((num3.toString()).replace(/,/g, ""))
+    let value1 = parseFloat((num1.toString()).replace(/,/g, ""))
+    let value2 = parseFloat((num3.toString()).replace(/,/g, ""))
 
+    //preps the equation to begin again with the result as the left side
+    setResultRequested(false)
+    //right side is now blank
+    setRightSide([])
+    //set right side to false so that it needs a new number
+    setRights(false)
+    setRighty([])
+    //clears left side so it can be loaded with the new result
+    setLefty([])
+    setOperator("")
+    setLefts(false)
+    setDisplay([])
+
+console.log("kk")
     switch(operator) {
       case "+":
         result = value1 + value2
@@ -93,7 +111,7 @@ export const ButtonsGrid = () => {
       default:
         break;
     }
-    return result;
+    return result.toString();
   }
 
   return(
