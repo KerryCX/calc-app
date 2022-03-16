@@ -12,7 +12,7 @@ export const ButtonsGrid = () => {
   const [operator, setOperator] = useState("")
   const [resultRequested, setResultRequested] = useState(false)
   const [leftSet, setLefts] = useState(false)
-  const [rightSet, setRights] = useState(false)
+  const [rightSet, validEquation] = useState(false)
   const [sign, setSign] = useState("+")
 
   useEffect(()=> {
@@ -31,12 +31,15 @@ export const ButtonsGrid = () => {
     setOperator("")
     setResultRequested(false)
     setLefts(false)
-    setRights(false)
+    validEquation(false)
     setRightSide([])
   }
 
   const requestResult = (sentKeyValue) => {
-    //puts the number just input into the display variable newDisplay
+    //triggered when the = button is pressed it.
+    //if operator +,-,/ or X has not been entered, it does nothing. 
+    //If operator +,/,- or X entered, it sets the second part of the equation, 
+    //ready for calculate to be called.
     if(leftSet === false){     
       return;
     } else {
@@ -47,7 +50,7 @@ export const ButtonsGrid = () => {
       setDisplay([...newDisplay, sentKeyValue])
       setRighty([...righty, newRightSide])
       setResultRequested(true)
-      setRights(true)
+      validEquation(true)
     }
   }
 
@@ -95,7 +98,7 @@ export const ButtonsGrid = () => {
     //right side is now blank
     setRightSide([])
     //set right side to false so that it needs a new number
-    setRights(false)
+    validEquation(false)
     setRighty([])
     //clears left side so it can be loaded with the new result
     setLefty([])
