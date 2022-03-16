@@ -17,7 +17,6 @@ export const ButtonsGrid = () => {
 
   useEffect(()=> {
     if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && resultRequested === false) {
-      console.log(newDisplay)
       setLefts(true)
     } else if (resultRequested === true) {
       setDisplay(calculate(lefty, operator, righty))
@@ -26,7 +25,7 @@ export const ButtonsGrid = () => {
 
 
   const resetCalculator = () => {
-    setDisplay([])
+    setDisplay(["0"])
     setLefty([])
     setRighty([])
     setOperator("")
