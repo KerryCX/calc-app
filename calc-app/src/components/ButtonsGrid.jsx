@@ -5,7 +5,7 @@ import {useEffect, useState} from 'react';
 export const ButtonsGrid = () => {
 
   const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','+/-','/']
-  const [newDisplay, setDisplay] = useState([])
+  const [newDisplay, setDisplay] = useState(["0"])
   const [newRightSide, setRightSide] = useState([])
   const [lefty, setLefty] = useState([])
   const [righty, setRighty] = useState([])
@@ -13,15 +13,17 @@ export const ButtonsGrid = () => {
   const [resultRequested, setResultRequested] = useState(false)
   const [leftSet, setLefts] = useState(false)
   const [rightSet, setRights] = useState(false)
+  const [sign, setSign] = useState("+")
 
   useEffect(()=> {
     if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && resultRequested === false) {
+      console.log(newDisplay)
       setLefts(true)
     } else if (resultRequested === true) {
-      console.log("jj")
       setDisplay(calculate(lefty, operator, righty))
     }
   }, [operator, resultRequested, leftSet, rightSet, lefty, righty])
+
 
   const resetCalculator = () => {
     setDisplay([])
@@ -36,9 +38,12 @@ export const ButtonsGrid = () => {
 
   const requestResult = (sentKeyValue) => {
     //puts the number just input into the display variable newDisplay
-    if(leftSet === false){
+    if(leftSet === false){     
       return;
     } else {
+      if(newDisplay){
+        console.log(newDisplay)
+      }
       setRightSide([...newRightSide, sentKeyValue])
       setDisplay([...newDisplay, sentKeyValue])
       setRighty([...righty, newRightSide])
@@ -50,30 +55,35 @@ export const ButtonsGrid = () => {
   const keyPressed = (sentKeyValue) => {
     //puts the number just input into the display variable newDisplay
     if(sentKeyValue !== "+/-"){
-      if(leftSet === false)
-      setDisplay([...newDisplay, sentKeyValue])
+      if(leftSet === false) {
+        newDisplay[0] === "0" ? setDisplay(sentKeyValue) : setDisplay([...newDisplay, sentKeyValue])    
+        console.log(newDisplay)   
+      }
       else {
+        console.log(newDisplay)
+        //first (left) part of equation is chosen, so putting the new values in second (right) part of the equation
         setRightSide([...newRightSide, sentKeyValue])
         console.log(newDisplay)
         setDisplay([...newDisplay, sentKeyValue])
+        console.log(newDisplay)
       }
     }
 
     if(sentKeyValue === "+" || sentKeyValue === "-" || sentKeyValue === "X" || sentKeyValue === "/") {
-      console.log(lefty)
+      console.log(newDisplay)
       setLefty([...lefty, newDisplay])
-      console.log(lefty)
+      console.log(newDisplay)
+      console.log(lefty * -1)
       setOperator(sentKeyValue)
     } else if (sentKeyValue === "+/-") {
-      if(lefty<0) {
-        let oi = (lefty * -1)
-        setLefty(oi)
+      if(sign === "+"){
+        console.log(sign, "set to -")
+        setSign("-")
       } else {
-        let oi = (lefty * -1)
-        setLefty(oi)
+        console.log(sign, "set to +")
+        setSign("+")
       }
-      //need to work out what to do here
-    } 
+    }
   }
 
   const calculate = (num1, operator, num3) => {
