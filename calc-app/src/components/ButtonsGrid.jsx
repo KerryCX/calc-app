@@ -82,7 +82,6 @@ export const ButtonsGrid = () => {
         setX([display])
         setX([...x, sentKeyValue])
         
-
       } else if (xSet === false){
           //if x is not set yet, set it here and next valY will be loaded
           setX([...x, display])
