@@ -7,10 +7,11 @@ export const ButtonsGrid = () => {
 
   const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','+/-','/']
   const [display, setDisplay] = useState(["0"])
-  const [newY, loadY] = useState([])
+  const [tempY, setTempY] = useState([])
   const [x, setX] = useState([])
   const [valY, setY] = useState([])
   const [operator, setOperator] = useState("")
+  const [newOperator, setNewOperator] = useState("")
   const [resultRequested, setResultRequested] = useState(false)
   const [xSet, setXBoolean] = useState(false)
   const [ySet, setYBoolean] = useState(false)
@@ -19,10 +20,18 @@ export const ButtonsGrid = () => {
   useEffect(()=> {    
     if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && resultRequested === false) {
       setXBoolean(true)
-    } else if (resultRequested === true) {
+    } else if (resultRequested) {
       setDisplay(calculate(x, operator, valY))
     }
-  }, [operator, resultRequested, xSet, ySet, x, valY])
+  }, [operator, resultRequested, xSet, ySet, x, valY, display, newOperator])
+
+  useEffect(() => {
+    if (operator === "" && newOperator !== ""){
+      console.log(newOperator)
+      setDisplay([...display, newOperator])
+      setNewOperator("")
+    }
+  }, [operator, newOperator, display])
 
   const resetCalculator = () => {
     setDisplay(["0"])
@@ -32,7 +41,7 @@ export const ButtonsGrid = () => {
     setResultRequested(false)
     setXBoolean(false)
     setYBoolean(false)
-    loadY([])
+    setTempY([])
     setSign("")
   }
 
@@ -41,20 +50,18 @@ export const ButtonsGrid = () => {
     //if operator +,-,/ or X has not been entered, it does nothing. 
     //If operator +,/,- or X entered, it sets the second part of the equation, 
     //ready for calculate to be called.
+    console.log(sentKeyValue)
     if(xSet){     
-      loadY([...newY, sentKeyValue])
+      setTempY([...tempY, sentKeyValue])
       setDisplay([...display, sentKeyValue])
-      setY([...valY, newY])
+      setY([...valY, tempY])
       setResultRequested(true)
       setYBoolean(true)
+      if(sentKeyValue !== "=") {
+        setNewOperator(sentKeyValue)
+      }
+      
     }
-  }
-
-  const clearRightSide = (i) => {
-    setY([false])
-    setResultRequested(false)
-    setYBoolean(false)
-    loadY([])    
   }
 
   const keyPressed = (sentKeyValue) => {
@@ -64,7 +71,7 @@ export const ButtonsGrid = () => {
         display[0] === "0" ? setDisplay(sentKeyValue) : setDisplay([...display, sentKeyValue])    
       } else {
         //first (left) part of equation is chosen, so putting the new values in second (right) part of the equation
-        loadY([...newY, sentKeyValue])
+        setTempY([...tempY, sentKeyValue])
         setDisplay([...display, sentKeyValue])
         setYBoolean(true)
       }
@@ -72,16 +79,7 @@ export const ButtonsGrid = () => {
 
     if(sentKeyValue === "+" || sentKeyValue === "-" || sentKeyValue === "X" || sentKeyValue === "/") {
       if(xSet && ySet){
-        //work out the result and set to left side.
-        loadY([...newY, sentKeyValue])
-        setDisplay([...display, sentKeyValue])
-        setY([...valY, newY])
-        setOperator(sentKeyValue)
-        setDisplay(calculate(x, operator, newY))
-        clearRightSide(operator)
-        setX([display])
-        setX([...x, sentKeyValue])
-        
+        requestResult(sentKeyValue)
       } else if (xSet === false){
           //if x is not set yet, set it here and next valY will be loaded
           setX([...x, display])
@@ -110,7 +108,7 @@ export const ButtonsGrid = () => {
     //preps the equation to begin again with the result as the left side
     setResultRequested(false)
     //right side is now blank
-    loadY([])
+    setTempY([])
     //set right side to false so that it needs a new number
     setYBoolean(false)
     setY([])
