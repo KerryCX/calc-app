@@ -2,14 +2,14 @@ import {Button, ResetButton, EqualsButton} from './Button.jsx';
 import './ButtonsGrid.css';
 import {useEffect, useState} from 'react';
 
-//if in an equation, x + y = z, x is 
+//if in an equation, x + ValY = z, x is 
 export const ButtonsGrid = () => {
 
   const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','+/-','/']
   const [display, setDisplay] = useState(["0"])
   const [newY, loadY] = useState([])
   const [x, setX] = useState([])
-  const [y, setY] = useState([])
+  const [valY, setY] = useState([])
   const [operator, setOperator] = useState("")
   const [resultRequested, setResultRequested] = useState(false)
   const [xSet, setXBoolean] = useState(false)
@@ -20,9 +20,9 @@ export const ButtonsGrid = () => {
     if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && resultRequested === false) {
       setXBoolean(true)
     } else if (resultRequested === true) {
-      setDisplay(calculate(x, operator, y))
+      setDisplay(calculate(x, operator, valY))
     }
-  }, [operator, resultRequested, xSet, ySet, x, y])
+  }, [operator, resultRequested, xSet, ySet, x, valY])
 
   const resetCalculator = () => {
     setDisplay(["0"])
@@ -44,7 +44,7 @@ export const ButtonsGrid = () => {
     if(xSet){     
       loadY([...newY, sentKeyValue])
       setDisplay([...display, sentKeyValue])
-      setY([...y, newY])
+      setY([...valY, newY])
       setResultRequested(true)
       setYBoolean(true)
     }
@@ -75,7 +75,7 @@ export const ButtonsGrid = () => {
         //work out the result and set to left side.
         loadY([...newY, sentKeyValue])
         setDisplay([...display, sentKeyValue])
-        setY([...y, newY])
+        setY([...valY, newY])
         setOperator(sentKeyValue)
         setDisplay(calculate(x, operator, newY))
         clearRightSide(operator)
@@ -84,7 +84,7 @@ export const ButtonsGrid = () => {
         
 
       } else if (xSet === false){
-          //if x is not set yet, set it here and next y will be loaded
+          //if x is not set yet, set it here and next valY will be loaded
           setX([...x, display])
           setOperator(sentKeyValue)  
           setXBoolean(true)
@@ -93,8 +93,7 @@ export const ButtonsGrid = () => {
       if(sign === ""){
         if (display[0] !== "0") {
           setSign("-")
-          if(xSet === true){
-          } else {
+          if(!xSet){
             setX([...x, "-"])
           }
         }
