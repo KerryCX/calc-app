@@ -18,10 +18,7 @@ export const ButtonsGrid = () => {
 
   useEffect(()=> {    
     if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && resultRequested === false) {
-      if(!xSet) {   
-        setXBoolean(true)
-      }
-
+      setXBoolean(true)
     } else if (resultRequested === true) {
       setDisplay(calculate(x, operator, y))
     }
@@ -84,15 +81,14 @@ export const ButtonsGrid = () => {
         clearRightSide(operator)
         setX([display])
         setX([...x, sentKeyValue])
+        
 
       } else if (xSet === false){
           //if x is not set yet, set it here and next y will be loaded
           setX([...x, display])
           setOperator(sentKeyValue)  
           setXBoolean(true)
-      } else if (ySet === false) {
       }
-
     } else if (sentKeyValue === "+/-") {
       if(sign === ""){
         if (display[0] !== "0") {
