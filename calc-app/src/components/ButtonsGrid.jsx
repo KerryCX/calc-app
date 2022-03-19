@@ -70,7 +70,7 @@ export const ButtonsGrid = () => {
       if(xSet === false) {
         display[0] === "0" ? setDisplay(sentKeyValue) : setDisplay([...display, sentKeyValue])    
       } else {
-        //first (left) part of equation is chosen, so putting the new values in second (right) part of the equation
+        //x is set, so starting to put new values entered into y part of the equation
         setTempY([...tempY, sentKeyValue])
         setDisplay([...display, sentKeyValue])
         setYBoolean(true)
@@ -80,7 +80,7 @@ export const ButtonsGrid = () => {
     if(sentKeyValue === "+" || sentKeyValue === "-" || sentKeyValue === "X" || sentKeyValue === "/") {
       if(xSet && ySet){
         requestResult(sentKeyValue)
-      } else if (xSet === false){
+      } else if (!xSet){
           //if x is not set yet, set it here and next valY will be loaded
           setX([...x, display])
           setOperator(sentKeyValue)  
@@ -117,7 +117,7 @@ export const ButtonsGrid = () => {
     setOperator("")
     setSign("")
     setXBoolean(false)
-    
+    //clears display ready for solution
     setDisplay([])
 
     switch(operator) {
