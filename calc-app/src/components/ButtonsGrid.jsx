@@ -15,8 +15,6 @@ export const ButtonsGrid = () => {
   const [xSet, setXBoolean] = useState(false)
   const [ySet, setYBoolean] = useState(false)
   const [sign, setSign] = useState("")
-  const [xSign, setXSign] = useState("")
-  const [ySign, setYSign] = useState("")
 
   useEffect(()=> {    
     if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && resultRequested === false) {
@@ -100,9 +98,7 @@ export const ButtonsGrid = () => {
         if (display[0] !== "0") {
           setSign("-")
           if(xSet === true){
-            setYSign("-")
           } else {
-            setXSign("-")
             setX([...x, "-"])
           }
         }
