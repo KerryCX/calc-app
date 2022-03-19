@@ -2,50 +2,42 @@ import {Button, ResetButton, EqualsButton} from './Button.jsx';
 import './ButtonsGrid.css';
 import {useEffect, useState} from 'react';
 
+//if in an equation, x + y = z, x is 
 export const ButtonsGrid = () => {
 
   const calculatorKeys = ['1','2','3','4','5','6','7','8','9','-','0','+','X','+/-','/']
-  const [newDisplay, setDisplay] = useState(["0"])
-  const [newRightSide, setRightSide] = useState([])
-  const [lefty, setLefty] = useState([])
-  const [righty, setRighty] = useState([])
+  const [display, setDisplay] = useState(["0"])
+  const [newY, loadY] = useState([])
+  const [x, setX] = useState([])
+  const [y, setY] = useState([])
   const [operator, setOperator] = useState("")
   const [resultRequested, setResultRequested] = useState(false)
-  const [leftSet, setLefts] = useState(false)
-  const [rightSet, validEquation] = useState(false)
+  const [xSet, setXBoolean] = useState(false)
+  const [ySet, setYBoolean] = useState(false)
   const [sign, setSign] = useState("")
-  const [leftSign, setSignLeft] = useState("")
-  const [rightSign, setSignRight] = useState("")
+  const [xSign, setXSign] = useState("")
+  const [ySign, setYSign] = useState("")
 
-  useEffect(()=> {
+  useEffect(()=> {    
     if((operator === "+" || operator === "-" || operator === "X" || operator === "/" ) && resultRequested === false) {
-      setLefts(true)
-    } else if (resultRequested === true) {
-      setDisplay(calculate(lefty, operator, righty))
-    }
-  }, [operator, resultRequested, leftSet, rightSet, lefty, righty])
+      if(!xSet) {   
+        setXBoolean(true)
+      }
 
-  useEffect(()=> {
-    if(sign === "-"){
-     // setSign("+")
-      //setDisplay([sign, ...newDisplay])
-      console.log(sign, newDisplay)
-    } else if (sign === "+"){
-      //setSign("-")
-      //setDisplay([sign, ...newDisplay])
-      console.log(sign)
+    } else if (resultRequested === true) {
+      setDisplay(calculate(x, operator, y))
     }
-  }, [sign, newDisplay])
+  }, [operator, resultRequested, xSet, ySet, x, y])
 
   const resetCalculator = () => {
     setDisplay(["0"])
-    setLefty([])
-    setRighty([])
+    setX([])
+    setY([])
     setOperator("")
     setResultRequested(false)
-    setLefts(false)
-    validEquation(false)
-    setRightSide([])
+    setXBoolean(false)
+    setYBoolean(false)
+    loadY([])
     setSign("")
   }
 
@@ -54,48 +46,65 @@ export const ButtonsGrid = () => {
     //if operator +,-,/ or X has not been entered, it does nothing. 
     //If operator +,/,- or X entered, it sets the second part of the equation, 
     //ready for calculate to be called.
-    if(leftSet === false){     
-      return;
-    } else {
-      if(newDisplay){
-        console.log(newDisplay)
-      }
-      setRightSide([...newRightSide, sentKeyValue])
-      setDisplay([...newDisplay, sentKeyValue])
-      setRighty([...righty, newRightSide])
+    if(xSet){     
+      loadY([...newY, sentKeyValue])
+      setDisplay([...display, sentKeyValue])
+      setY([...y, newY])
       setResultRequested(true)
-      validEquation(true)
+      setYBoolean(true)
     }
   }
 
+  const clearRightSide = (i) => {
+    setY([false])
+    setResultRequested(false)
+    setYBoolean(false)
+    loadY([])    
+  }
+
   const keyPressed = (sentKeyValue) => {
-    //puts the number just input into the display variable newDisplay
+    //puts the number just input into the display variable display
     if(sentKeyValue !== "+/-"){
-      if(leftSet === false) {
-        newDisplay[0] === "0" ? setDisplay(sentKeyValue) : setDisplay([...newDisplay, sentKeyValue])    
-      }
-      else {
+      if(xSet === false) {
+        display[0] === "0" ? setDisplay(sentKeyValue) : setDisplay([...display, sentKeyValue])    
+      } else {
         //first (left) part of equation is chosen, so putting the new values in second (right) part of the equation
-        setRightSide([...newRightSide, sentKeyValue])
-        setDisplay([...newDisplay, sentKeyValue])
+        loadY([...newY, sentKeyValue])
+        setDisplay([...display, sentKeyValue])
+        setYBoolean(true)
       }
     }
 
     if(sentKeyValue === "+" || sentKeyValue === "-" || sentKeyValue === "X" || sentKeyValue === "/") {
-      console.log(newDisplay)
-      setLefty([...lefty, newDisplay])
-      console.log(newDisplay)
-      console.log(lefty * -1)
-      setOperator(sentKeyValue)
+      if(xSet && ySet){
+        //work out the result and set to left side.
+        loadY([...newY, sentKeyValue])
+        setDisplay([...display, sentKeyValue])
+        setY([...y, newY])
+        setOperator(sentKeyValue)
+        setDisplay(calculate(x, operator, newY))
+        clearRightSide(operator)
+        setX([display])
+        setX([...x, sentKeyValue])
+
+      } else if (xSet === false){
+          //if x is not set yet, set it here and next y will be loaded
+          setX([...x, display])
+          setOperator(sentKeyValue)  
+          setXBoolean(true)
+      } else if (ySet === false) {
+      }
+
     } else if (sentKeyValue === "+/-") {
       if(sign === ""){
-        if (newDisplay[0] !== "0") {
-          console.log(leftSign, rightSign)
+        if (display[0] !== "0") {
           setSign("-")
-          if(leftSet === true){
-            setSignRight("-")
+          if(xSet === true){
+            setYSign("-")
+          } else {
+            setXSign("-")
+            setX([...x, "-"])
           }
-          console.log(leftSign, rightSign)
         }
       } else {
         setSign("")
@@ -111,17 +120,18 @@ export const ButtonsGrid = () => {
     //preps the equation to begin again with the result as the left side
     setResultRequested(false)
     //right side is now blank
-    setRightSide([])
+    loadY([])
     //set right side to false so that it needs a new number
-    validEquation(false)
-    setRighty([])
+    setYBoolean(false)
+    setY([])
     //clears left side so it can be loaded with the new result
-    setLefty([])
+    setX([])
     setOperator("")
-    setLefts(false)
+    setSign("")
+    setXBoolean(false)
+    
     setDisplay([])
-console.log(value1, value2)
-console.log("kk")
+
     switch(operator) {
       case "+":
         result = value1 + value2
@@ -151,7 +161,7 @@ console.log("kk")
           keyPressed = { keyPressed }            
         />
       ))}
-      <div className="display-position display-answer">{ sign }{ newDisplay }</div>
+      <div className="display-position display-answer">{ sign }{ display }</div>
       <ResetButton
         value={"Reset"}
         symbolStyle="button-symbol"
